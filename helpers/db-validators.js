@@ -1,6 +1,6 @@
-const Usuario = require("../models/usuario");
+const Estudiante = require("../models/student");
 const Role = require("../models/role");
-const Mascota = require("../models/mascota");
+const Profesor = require("../models/teacher");
 
 const existenteEmailEstudiante = async (correo = "") => {
   const existeEmailEstudiante = await Estudiante.findOne({ correo });

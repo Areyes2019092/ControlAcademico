@@ -16,7 +16,7 @@ const StudentSchema = Schema ({
     role:{
         type: String,
         required: true,
-        enum: ["TEACHER_ROLE", "STUDENT_ROLE"]
+        enum: ["STUDENT_ROLE"]
     },
     estado:{
         type: Boolean,

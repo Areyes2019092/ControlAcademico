@@ -82,6 +82,8 @@ const estudiantesPost = async (req, res) => {
 module.exports = {
     estudiantesGet,
     getEstudianteByid,
-    
+    estudiantesPost,
+    estudiantesPut,
+    estudiantesDelete,
   //login,
 };
