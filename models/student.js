@@ -25,7 +25,13 @@ const StudentSchema = Schema ({
     google:{
         type: Boolean,
         default: false
-    }
+    },
+
+    materia:[
+    {
+        nombre: String,
+    },
+    ],
 });
 
 /*UsuarioSchema.methods.toJSON = function(){
@@ -33,4 +39,4 @@ const StudentSchema = Schema ({
     return usuario;
 }*/
 
-module.exports = model('Student', StudentSchema);
+module.exports = model("Estudiante", StudentSchema);
