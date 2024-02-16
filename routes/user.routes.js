@@ -1,26 +1,26 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
 const {
-  existeMaestroById,
+  existeUsuarioById,
   existeMateriaById,
 } = require("../helpers/db-validator");
 
 const {
-  getMaterias,
-  materiasPost,
-  materiasPut,
-  getMateriaById,
-  materiasDelete,
-} = require("../controllers/materia.controller");
+  getUsuarios,
+  usuariosPost,
+  usuariosPut,
+  getUsuarioById,
+  usuariosDelete,
+} = require("../controllers/user.controller");
 const { validarCampos } = require("../middlewares/validarCampos");
 const router = Router();
 
-router.get("/", getMaterias);
+router.get("/", getUsuarios);
 
 router.get(
   "/:id",
   [check("id", "No es un id de MongoDB").isMongoId()],
-  getMateriaById
+  getUsuarioById
 );
 
 router.post(
@@ -29,27 +29,27 @@ router.post(
     check("nombre", "El nombre no puede estar vacío").not().isEmpty(),
     validarCampos,
   ],
-  materiasPost
+  usuariosPost
 );
 
 router.put(
   "/:id",
   [
     check("id", "El id no tiene un formato de MongoDB").isMongoId(),
-    check("id").custom(existeMateriaById),
+    check("id").custom(existeUsuarioById),
     validarCampos,
   ],
-  materiasPut
+  usuariosPut
 );
 
 router.delete(
   "/:id",
   [
     check("id", "El id no tiene un formato de MongoDB").isMongoId(),
-    check("id").custom(existeMateriaById),
+    check("id").custom(existeUsuarioById),
     validarCampos,
   ],
-  materiasDelete
+  usuariosDelete
 );
 
 module.exports = router;

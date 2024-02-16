@@ -4,9 +4,9 @@ const bcrypt = require("bcrypt");
 
 const Usuario = require("../models/user.model");
 const { check } = require("express-validator");
-const { existeMaestroById } = require("../helpers/db-validator");
+const { existeUsuarioById } = require("../helpers/db-validator");
 
-const getUser = async (req, res = response) => {
+const getUsuarios = async (req, res = response) => {
   const { query } = { estado: true };
 
   const [total, usuarios] = await Promise.all([
@@ -20,7 +20,7 @@ const getUser = async (req, res = response) => {
   });
 };
 
-const getUserById = async (req, res) => {
+const getUsuarioById = async (req, res) => {
   const { id } = req.params;
   const usuario = await Usuario.findOne({ _id: id });
 
@@ -65,8 +65,8 @@ const usuariosDelete = async (req, res) => {
 };
 
 module.exports = {
-  getUser,
-  getUserById,
+  getUsuarios,
+  getUsuarioById,
   usuariosPost,
   usuariosPut,
   usuariosDelete,
