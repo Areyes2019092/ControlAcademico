@@ -1,1 +1,2 @@
-# ControlAcademico
+# Control-academico
+Practica supervisada
