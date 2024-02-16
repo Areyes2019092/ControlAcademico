@@ -25,21 +25,7 @@ const getEstudianteByid = async (req, res) => {
     estudiante,
   });
 };
-/*
-const login = async (req, res) => {
-  var resultado = "";
-  const { correo, password } = req.params;
-  const usuario = await Usuario.findOne({ correo: correo, password: password });
-  if (!usuario) {
-    resultado = "Datos incorrectos";
-  } else {
-    resultado = `Bienvenido ${usuario.nombre}`;
-  }
-  res.status(200).json({
-    resultado,
-  });
-};
-*/
+
 const estudiantesPut = async (req, res) => {
   const { id } = req.params;
   const { _id, password, google, correo, ...resto } = req.body;
@@ -73,7 +59,7 @@ const estudiantesPost = async (req, res) => {
   const salt = bcryptjs.genSaltSync();
   estudiante.password = bcryptjs.hashSync(password, salt);
 
-  await estudainte.save();
+  await estudiante.save();
   res.status(200).json({
     estudiante,
   });
@@ -85,5 +71,4 @@ module.exports = {
     estudiantesPost,
     estudiantesPut,
     estudiantesDelete,
-  //login,
 };

@@ -8,7 +8,7 @@ class Server {
     this.port = process.env.PORT;
     this.estudiantesPath = "/api/estudiantes";
     this.profesoresPath = "/api/profesores";
-    //this.loginPath = "/api/login";
+  
 
     this.conectarDB();
 
@@ -16,7 +16,7 @@ class Server {
 
     this.routes();
     this.routes2();
-    //this.routes3;
+  
   }
 
   async conectarDB() {
@@ -36,11 +36,7 @@ class Server {
   routes2() {
     this.app.use(this.profesoresPath, require("../routes/teacher.routes"));
   }
-  /*
-  routes3() {
-    this.app.use(this.loginPath, require("../routes/login.routes"));
-  }
-*/
+  
   listen() {
     this.app.listen(this.port, () => {
       console.log("Servidor ejecutado y escuchando en el puerto", this.port);
