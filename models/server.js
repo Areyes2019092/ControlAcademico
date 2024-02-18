@@ -8,7 +8,8 @@ class Server {
     this.port = process.env.PORT;
     this.materiaPath = "/academic/materias";
     this.usuarioPath = "/academic/usuarios";
-
+    this.studentPath = "/academic/student";
+    this.loginPath = "/academic/login";
     this.conectarDB();
 
     this.middlewares();
@@ -20,21 +21,29 @@ class Server {
     await dbConnection();
   }
 
+
+
   middlewares() {
     this.app.use(express.static("public"));
     this.app.use(cors());
     this.app.use(express.json());
   }
 
+
+
   routes() {
     this.app.use(this.materiaPath, require("../routes/materia.routes"));
-    this.app.use(this.usuarioPath, require("../routes/usuario.routes"));
+    this.app.use(this.usuarioPath, require("../routes/user.routes"));
+    this.app.use(this.studentPath, require("../routes/student.routes"));
+    this.app.use(this.loginPath, require("../routes/login.routes"));
   }
+
+
 
   listen() {
     this.app.listen(this.port, () => {
       console.log(
-        `Servidor ejecutando y escuchando por el puerto ${this.port}`
+        `Servido funcionando puerto ${this.port}`
       );
     });
   }
