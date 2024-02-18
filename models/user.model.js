@@ -8,6 +8,8 @@ const UserSchema = Schema({
   correo: {
     type: String,
     required: [true, "El correo es obligatorio"],
+    unique: true,
+
   },
   password: {
     type: String,
@@ -23,24 +25,18 @@ const UserSchema = Schema({
     type: Boolean,
     default: true,
   },
+  
+  materia: {
+    nombre: String,
+  },
 
-  // Asignar ALUMNOS
-  materia: [
-    {
-      nombre: String,
-    },
-  ],
-  materia2: [
-    {
-      nombre: String,
-    },
-  ],
-  materia3: [
-    {
-      nombre: String,
-    },
-  ],
+  materia2: {
+    nombre: String,
+  },
+
+  materia3: {
+    nombre: String,
+  },
 });
-
 
 module.exports = model("Usuario", UserSchema);
