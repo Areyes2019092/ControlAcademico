@@ -4,10 +4,11 @@ const bcrypt = require("bcrypt");
 
 const Usuario = require("../models/user.model");
 const { check } = require("express-validator");
-const { existeUsuarioById } = require("../helpers/db-validator");
+const { existeMaestroById } = require("../helpers/db-validator");
 
-const getUsuarios = async (req, res = response) => {
-  const { query } = { estado: true };
+const getUser = async (req, res = response) => {
+  
+  const query = { estado: true };
 
   const [total, usuarios] = await Promise.all([
     Usuario.countDocuments(query),
@@ -20,7 +21,7 @@ const getUsuarios = async (req, res = response) => {
   });
 };
 
-const getUsuarioById = async (req, res) => {
+const getUserById = async (req, res) => {
   const { id } = req.params;
   const usuario = await Usuario.findOne({ _id: id });
 
@@ -35,9 +36,32 @@ const usuariosPost = async (req, res) => {
 
   await usuario.save();
   res.status(200).json({
-    materia,
+    usuario,
   });
 };
+
+const usuariosPostSTUDENT = async (req, res) => {
+  const { nombre, correo, password } = req.body;
+  const usuario = new Usuario({ nombre, correo, password });
+
+  await usuario.save();
+  res.status(200).json({
+    usuario,
+  });
+};
+
+
+const loginUsers = async (req, res) => {
+const { correo, password } = req.body;
+const usuario = await Usuario.findOne({correo: correo , password: password });
+if(!usuario){
+  return res.status(400).json({ msg: "Usuario incorrecto" });
+}
+res.status(200).json({
+  msg: "Bienvenido"
+})
+
+}
 
 const usuariosPut = async (req, res) => {
   const { id } = req.params;
@@ -65,9 +89,11 @@ const usuariosDelete = async (req, res) => {
 };
 
 module.exports = {
-  getUsuarios,
-  getUsuarioById,
+  getUser,
+  getUserById,
   usuariosPost,
   usuariosPut,
   usuariosDelete,
+  usuariosPostSTUDENT,
+  loginUsers
 };
