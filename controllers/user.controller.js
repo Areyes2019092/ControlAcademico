@@ -3,6 +3,8 @@ const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/user.model');
 const { generarJWT } = require("../helpers/jwt");
 
+//Obtener todos los usaurios
+
 const usuariosGet = async (req, res = response) => {
     const { limite, desde } = req.query;
     const query = { estado: true };
@@ -20,6 +22,8 @@ const usuariosGet = async (req, res = response) => {
     });
 }
 
+//Select el usuario por medio del id
+
 const getUsuarioByid = async (req, res) => {
     const { id } = req.params;
     const usuario = await Usuario.findOne({ _id: id });
@@ -28,6 +32,7 @@ const getUsuarioByid = async (req, res) => {
     });
 }
 
+//Actualizar
 
 const usuariosPut = async (req, res) => {
     const { id } = req.params;
@@ -36,18 +41,22 @@ const usuariosPut = async (req, res) => {
     const usuario = await Usuario.findByIdAndUpdate(id, resto);
 
     res.status(200).json({
-        msg: 'Actualizado'
+        msg: 'Usuario Actualizado'
     })
 }
+
+//Eliminar usuario
 
 const usuariosDelete = async (req, res) => {
     const { id } = req.params;
     const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
 
     res.status(200).json({
-        msg: 'Eliminado'
+        msg: 'Usuario Eliminado'
     });
 }
+
+//Crear un usario nuevo
 
 const usuariosPost = async (req, res) => {
     const { nombre, correo, password, role } = req.body;
@@ -62,6 +71,8 @@ const usuariosPost = async (req, res) => {
     });
 }
 
+//Si unos de los parametros no puede es erroneo, mostrar la razon de porque no se puede registrar
+
 const usuariosLogin = async (req, res) => {
     const { correo, password } = req.body;
 
@@ -70,13 +81,13 @@ const usuariosLogin = async (req, res) => {
 
     if (!usuario) {
         return res.status(400).json({
-            msg: 'No encontrado'
+            msg: 'El usuario no existe'
         });
     }
 
     if(!usuario.estado){
         return res.status(400).json({
-            msg: 'Usuario ya no existe'
+            msg: 'El usuario fue eliminado'
         })
     }
 
@@ -84,22 +95,24 @@ const usuariosLogin = async (req, res) => {
 
     if (!passwordValido) {
         return res.status(400).json({
-            msg: 'La contraseña no es correcta'
+            msg: 'Intente de nuevo'
         });
     }
 
+    //Creo token para despues mostrarlo al usuario al iniciar sesion
     const token = await generarJWT(usuario.id)
 
     res.status(200).json({
-        msg_1: 'Se inicio sesion',
-        msg_2: 'Bienvenido ',
+        msg_1: 'Inicio de sesion',
+        msg_2: 'Inicio',
         msg_3: 'token'+ token,
     });
 
+    //Si no se pudo solamente colocare error
     }catch(e){
         console.log(e);
         res.status(500).json({
-            msg: 'No se pudo iniciar sesion'
+            msg: 'Error'
         })
     }
 

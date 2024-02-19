@@ -1,81 +1,85 @@
-const { response, json } = require("express");
+const { response, json } = require('express');
+const Curso = require('../models/curso');
+const Usuario = require('../models/usuario');
+const usuarioCurso = require('../models/usuarioHasCurso');
 
-const bcrypt = require("bcrypt");
+const cursosGet = async (req, res = response) => {
+    const { limite, desde } = req.query;
+    const query = { estado: true };
 
-const Materia = require("../models/materia.model");
-const { check } = require("express-validator");
-const { existeMaestroById } = require("../helpers/db-validator");
+    const [total, cursos] = await Promise.all([
+        Curso.countDocuments(query),
+        Curso.find(query)
+            .skip(Number(desde))
+            .limit(Number(limite))
+    ]);
 
-const getMaterias = async (req, res = response) => {
-  const { query } = { estado: true };
-
-  const [total, materias] = await Promise.all([
-    Materia.countDocuments(query),
-    Materia.find(query),
-  ]);
-
-  res.status(200).json({
-    total,
-    materias,
-  });
-};
-
-const getMateriaById = async (req, res) => {
-  const { id } = req.params;
-  const materia = await Materia.findOne({ _id: id });
-
-  res.status(200).json({
-    materia,
-  });
-};
-
-const materiasPost = async (req, res) => {
-  const { nombre } = req.body;
-  const materia = new Materia({ nombre });
-
-  await materia.save();
-  res.status(200).json({
-    materia,
-  });
-};
-
-
-const materiasPut = async (req, res) => {
-  const { id } = req.params;
-  const { maestroId, ...resto } = req.body;
-
-  try {
-    await check(maestroId).custom(existeMaestroById).run(req);
-
-    await Materia.findByIdAndUpdate(id, { maestro: maestroId, ...resto });
-
-    const materiaActualizada = await Materia.findById(id);
-
-    return res.status(200).json({
-      msg: "Materia actualizada exitosamente",
-      materia: materiaActualizada,
+    res.status(200).json({
+        total,
+        cursos
     });
-  } catch (error) {
-    return res.status(400).json({ msg: error.message });
-  }
-};
+}
 
-const materiasDelete = async (req, res) => {
-  const { id } = req.params;
-  await Materia.findByIdAndUpdate(id, { estado: false });
+const getCursoByid = async (req, res) => {
+    const { id } = req.params;
+    const curso = await Curso.findOne({ _id: id });
 
-  const materia = await Materia.findOne({ _id: id });
+    res.status(200).json({
+        curso
+    });
+}
 
-  res.status(200).json({
-    msg: "Materia eliminada exitosamente",
-    materia,
-  });
-};
+const cursosPut = async (req, res) => {
+    const { id } = req.params;
+    const { _id, ...resto } = req.body;
+
+    const curso = await Curso.findByIdAndUpdate(id, resto);
+
+    res.status(200).json({
+        msg: 'Curso actualizado'
+    })
+}
+
+const cursosDelete = async (req, res) => {
+    const { id } = req.params;
+    const curso = await Curso.findByIdAndUpdate(id, { estado: false });
+
+    await usuarioHasCurso.updateMany({ curso: id }, { estado: false });
+
+    res.status(200).json({
+        msg_1: 'Curso eliminado:',
+        msg_2: curso.nombre
+    });
+}
+
+const cursosPost = async (req, res) => {
+    const { nombre, categoria, maestro } = req.body;
+
+    const Maestro = await Usuario.findOne({ correo: maestro });
+    if (!Maestro) {
+        res.status(400).json({
+            msg: 'el maestro asignado no existe'
+        })
+    }
+
+    if (Maestro.role !== "TEACHER_ROLE") {
+        return res.status(400).json({
+            msg: 'Un estudiante no puede crear cursos'
+        });
+    }
+
+    const curso = new Curso({ nombre, categoria, maestro });
+
+    await curso.save();
+    res.status(200).json({
+        curso
+    });
+}
 
 module.exports = {
-  getMaterias,
-  materiasPost,
-  materiasPut,
-  getMateriaById,
-  materiasDelete,
-};
+    cursosDelete,
+    cursosPost,
+    cursosGet,
+    getCursoByid,
+    cursosPut
+}
