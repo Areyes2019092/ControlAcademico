@@ -1,52 +1,36 @@
-const express = require("express");
-const cors = require("cors");
-const { dbConnection } = require("../db/config");
+const express = require('express');
+const cors = require('cors');
+const { dbConnection } = require('../db/config');
 
-class Server {
-  constructor() {
-    this.app = express();
-    this.port = process.env.PORT;
-    this.materiaPath = "/academic/materias";
-    this.usuarioPath = "/academic/usuarios";
-    this.studentPath = "/academic/student";
-    this.loginPath = "/academic/login";
-    this.conectarDB();
+class Server{
 
-    this.middlewares();
-
-    this.routes();
-  }
-
-  async conectarDB() {
-    await dbConnection();
-  }
-
-
-
-  middlewares() {
-    this.app.use(express.static("public"));
-    this.app.use(cors());
-    this.app.use(express.json());
-  }
-
-
-
-  routes() {
-    this.app.use(this.materiaPath, require("../routes/materia.routes"));
-    this.app.use(this.usuarioPath, require("../routes/user.routes"));
-    this.app.use(this.studentPath, require("../routes/student.routes"));
-    this.app.use(this.loginPath, require("../routes/login.routes"));
-  }
-
-
-
-  listen() {
-    this.app.listen(this.port, () => {
-      console.log(
-        `Servido funcionando puerto ${this.port}`
-      );
-    });
-  }
+    constructor(){
+        this.app = express();
+        this.port = process.env.PORT;
+        this.usuariosPath = '/api/usuarios';
+        this.cursosPath = '/api/cursos';
+        this.estudiantesPath = '/api/Asigancion_estudiantes';
+        this.conectarDB();
+        this.middlewares();
+        this.routes();
+    }
+    async conectarDB(){
+        await dbConnection();
+    }
+    middlewares(){
+        this.app.use(express.static('public'));
+        this.app.use(cors());
+        this.app.use(express.json());
+    }
+    routes(){
+        this.app.use(this.usuariosPath, require('../routes/user.routes'));
+        this.app.use(this.cursosPath, require('../routes/cursos.routes'));
+        this.app.use(this.estudiantesPath, require('../routes/usuarioHasCurso.routes'));
+    }
+    listen(){
+        this.app.listen(this.port, () => {
+            console.log('Servidor ejecutado y escuchando en el puerto', this.port);
+        });
+    }
 }
-
 module.exports = Server;
