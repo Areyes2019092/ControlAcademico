@@ -25,7 +25,13 @@ const existeCursoById = async ( id = '') => {
         throw new Error('El curso debe ser obligatorio');
     }
   }
-const existeCursoByNombre = async ( nombre = '') => {
+/*const existeCursoById = async ( nombre = '') => {
+    const existeCurssso = await Curso.findOne({nombre});
+    if(existeCurso){
+        throw new Error('El curso ya existe');
+    }
+}*/
+  const existeCursoByNombre = async ( nombre = '') => {
     const existeCurso = await Curso.findOne({nombre});
     if(existeCurso){
         throw new Error('El curso ya existe');

@@ -1,20 +1,18 @@
 const { response, json } = require('express');
-const usuarioHasCurso = require('../models/usuarioHasCurso');
+const usuarioHasCurso = require('../models/usuarioMateria.model');
 const Usuario = require('../models/user.model');
 const Curso = require('../models/materia.model');
 
 const usuarioHasCursoGet = async (req, res = response) => {
     const { limite, desde } = req.query;
     const query = { estado: true };
-
     const [total, usuarioHasCursos] = await Promise.all([
         usuarioHasCurso.countDocuments(query),
         usuarioHasCurso.find(query)
             .skip(Number(desde))
             .limit(Number(limite))
     ]);
-
-    res.status(200).json({
+     res.status(200).json({
         total,
         usuarioHasCursos
     });
