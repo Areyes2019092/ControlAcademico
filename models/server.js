@@ -1,9 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../db/config');
-
 class Server{
-
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
@@ -24,8 +22,9 @@ class Server{
     }
     routes(){
         this.app.use(this.usuariosPath, require('../routes/user.routes'));
-        this.app.use(this.cursosPath, require('../routes/cursos.routes'));
-        this.app.use(this.estudiantesPath, require('../routes/usuarioHasCurso.routes'));
+        this.app.use(this.cursosPath, require('../routes/materia.routes'));
+        //this.app.use(this.estudiantesPath, require('../routes//student.routes'));
+        this.app.use(this.estudiantesPath, require('../routes/cursoMateria.routes'));
     }
     listen(){
         this.app.listen(this.port, () => {

@@ -1,15 +1,12 @@
 const jwt = require("jsonwebtoken");
 const Usuario = require("../models/user.model");
-
 const validarJWT = async (req, res, next) => {
   const token = req.header("x-token");
   if (!token) {
     return res.status(401).json({
       msg: "No se pudo generar el token",
     });
-  }
-
-  try {
+  } try {
     const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
     const usuario = await Usuario.findById(uid);
     if (!usuario) {
@@ -22,8 +19,7 @@ const validarJWT = async (req, res, next) => {
       });
     }
     req.usuario = usuario;
-
-    next();
+     next();
   } catch (e) {
     console.log(e),
       res.status(401).json({
@@ -31,7 +27,6 @@ const validarJWT = async (req, res, next) => {
       });
   }
 };
-
 module.exports = {
   validarJWT,
 };

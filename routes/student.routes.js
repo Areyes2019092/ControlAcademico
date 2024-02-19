@@ -1,4 +1,4 @@
-const { Router } = require("express");
+/*const { Router } = require("express");
 const { check } = require("express-validator");
 const { correoExiste, existeUsuarioById } = require("../helpers/db-validator");
 
@@ -39,3 +39,4 @@ router.get(
 
 module.exports = router;
 
+*/

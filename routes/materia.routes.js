@@ -1,63 +1,39 @@
-const { Router } = require("express");
-const { check } = require("express-validator");
-const {
-  existeMaestroById,
-  nombreExiste,
-  existeMateriaById,
-} = require("../helpers/db-validator");
-
-const {
-  getMaterias,
-  materiasPost,
-  materiasPut,
-  getMateriaById,
-  materiasDelete,
-} = require("../controllers/materia.controller");
-const { validarCampos } = require("../middlewares/validarCampos");
+const { Router } = require('express');
+const { check } = require('express-validator');
+const { validarCampos, validarRolTeacher } = require('../middlewares/validarCampos');
+const { existeCursoById, existeCursoByNombre} = require('../helpers/db-validator');
+const { cursosPost, cursosGet, getCursoByid, cursosPut, cursosDelete } = require('../controllers/materia.controller');
 const router = Router();
-
-router.get("/", getMaterias);
-
+router.get("/", cursosGet);
 router.get(
-  "/:id",
-  [
-    check("id", "No es un id de MongoDB").isMongoId(),
-    check("id").custom(existeMateriaById),
-    validarCampos
-  ],
-  getMateriaById
-);
-
-router.post(
-  "/",
-  [
-    check("nombre", "El nombre no puede estar vacío").not().isEmpty(),
-    check("nombre").custom(nombreExiste),
-    validarCampos,
-  ],
-  materiasPost
-);
-
+    "/:id",
+    [
+        check("id","El id no es un formato válido de MongoDB").isMongoId(),
+        check("id").custom(existeCursoById),
+        validarCampos
+    ], getCursoByid);
 router.put(
-  "/:id",
-  [
-    check("id", "El id no tiene un formato de MongoDB").isMongoId(),
-    check("id").custom(existeMateriaById),
-    check("nombre", "El nombre no puede estar vacío").not().isEmpty(),
-    check("nombre").custom(nombreExiste),
-    validarCampos,
-  ],
-  materiasPut
-);
-
+    "/:id",
+    [
+        check("id","El id no es un formato válido de MongoDB").isMongoId(),
+        check("id").custom(existeCursoById),
+        validarCampos,
+        validarRolTeacher
+    ], cursosPut);
 router.delete(
-  "/:id",
-  [
-    check("id", "El id no tiene un formato de MongoDB").isMongoId(),
-    check("id").custom(existeMateriaById),
-    validarCampos,
-  ],
-  materiasDelete
-);
-
+        "/:id",
+        [
+            check("id","El id no es un formato válido de MongoDB").isMongoId(),
+            check("id").custom(existeCursoById),
+            validarCampos,
+            validarRolTeacher
+        ], cursosDelete);
+router.post(
+    "/", 
+    [
+        check("nombre","El nombre es obligatorio").not().isEmpty(),
+        check("nombre").custom(existeCursoByNombre),
+        check("maestro","Debes escribir tu correo, no tu usuario").isEmail(),
+        validarCampos
+    ], cursosPost); 
 module.exports = router;

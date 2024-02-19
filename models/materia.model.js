@@ -13,6 +13,14 @@ const CursoSchema = Schema ({
         enum: ["comunicacion", "sociales", "taller", "dibujo", "indefinido"],
         default: "indefinido"
     },
+  
+    /*
+    cantidad: {
+      type: num,
+      required: true,
+      default: "0"
+  },*/
+
     estado:{
         type: Boolean,
         default: true
