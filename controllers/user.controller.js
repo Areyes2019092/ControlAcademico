@@ -29,6 +29,17 @@ const getUsuarioByid = async (req, res) => {
     });
 }
 
+/*const asignarMaestroPut = async (req, res) => {
+  const { id } = req.params;
+  const { _id, nombre, ...resto } = req.body;
+  await Materia.findByIdAndUpdate(id, resto);
+  const materia = await Materia.findOne({ _id: id });
+  req.status(200).json({
+    msg: "Maestro asignado exitosamente",
+    materia,
+*/
+
+
 //Actualizar
 
 const usuariosPut = async (req, res) => {

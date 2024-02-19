@@ -16,7 +16,20 @@ const cursosGet = async (req, res = response) => {
         cursos
     });
 }
-const getCursoByid = async (req, res) => {
+
+/*
+const asignarMaestroPut = async (req, res) => {
+  const { id } = req.params;
+  const { _id, nombre, ...resto } = req.body;
+  await Materia.findByIdAndUpdate(id, resto);
+  const materia = await Materia.findOne({ _id: id });
+  req.status(200).json({
+    msg: "Maestro asignado exitosamente",
+    materia,
+  });
+  */
+
+  const getCursoByid = async (req, res) => {
     const { id } = req.params;
     const curso = await Curso.findOne({ _id: id });
     res.status(200).json({
