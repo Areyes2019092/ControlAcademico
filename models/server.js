@@ -24,7 +24,7 @@ class Server{
         this.app.use(this.usuariosPath, require('../routes/user.routes'));
         this.app.use(this.cursosPath, require('../routes/materia.routes'));
         //this.app.use(this.estudiantesPath, require('../routes//student.routes'));
-        this.app.use(this.estudiantesPath, require('../routes/cursoMateria.routes'));
+        this.app.use(this.estudiantesPath, require('../routes/usuarioMateria.routes'));
     }
     listen(){
         this.app.listen(this.port, () => {

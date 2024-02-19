@@ -1,0 +1,94 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Cursos",
+    "dateExported": "2024-02-19T01:54:50.203Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "f7a5df21-280d-4992-84b1-7932ee7b8bcd",
+            "colId": "e72d118a-611f-4738-b521-bb547344daba",
+            "containerId": "",
+            "name": "cursosGet",
+            "url": "http://localhost:3000/api/cursos",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-02-19T01:49:12.714Z",
+            "modified": "2024-02-19T01:49:12.714Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "42a1145d-c5f6-42f1-9206-602d366e80ad",
+            "colId": "e72d118a-611f-4738-b521-bb547344daba",
+            "containerId": "",
+            "name": "cursosPost",
+            "url": "http://localhost:3000/api/cursos",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-02-19T01:49:12.715Z",
+            "modified": "2024-02-19T01:49:12.715Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\":\"Computacion\",\n  \"categoria\":\"Taller\",\n  \"maestro\":\"braulio@gmail.com\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "dc53e125-c1b2-405d-9cdf-aa13ce3f5346",
+            "colId": "e72d118a-611f-4738-b521-bb547344daba",
+            "containerId": "",
+            "name": "getCursosById",
+            "url": "http://localhost:3000/api/cursos/65cac931b8b6faca45e9fdb8",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-02-19T01:49:12.716Z",
+            "modified": "2024-02-19T01:49:12.716Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "536f4c29-e5d1-4e39-8b8d-4d311bf5d8d9",
+            "colId": "e72d118a-611f-4738-b521-bb547344daba",
+            "containerId": "",
+            "name": "cursosPut",
+            "url": "http://localhost:3000/api/cursos/65cac931b8b6faca45e9fdb8",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2024-02-19T01:49:12.717Z",
+            "modified": "2024-02-19T01:49:12.717Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\":\"Idioma\",\n  \"maestro\":\"65cac4a93f69f860c25d361e\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "2c2f95f9-01e8-4e48-9e60-e59302333900",
+            "colId": "e72d118a-611f-4738-b521-bb547344daba",
+            "containerId": "",
+            "name": "cursoDelete",
+            "url": "http://localhost:3000/api/cursos/65ce8b913d155418f37fcdd3",
+            "method": "DELETE",
+            "sortNum": 60000,
+            "created": "2024-02-19T01:49:12.718Z",
+            "modified": "2024-02-19T01:49:12.718Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"maestro\":\"65ce727d087bd357d67c79b0\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
