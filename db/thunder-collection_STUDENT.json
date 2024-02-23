@@ -1,0 +1,114 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "STUDENT",
+    "dateExported": "2024-02-23T17:44:36.377Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "cf83024e-b4a3-41d9-9120-182d83b25876",
+            "colId": "a1f32aaa-465d-4fde-a2a2-da97104d897f",
+            "containerId": "",
+            "name": "nuevoStudiante",
+            "url": "http://localhost:3000/academic/student/",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-02-23T16:33:35.118Z",
+            "modified": "2024-02-23T17:26:54.268Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\": \"maicol\",\n  \"correo\": \"maicol@gmail.com\",\n  \"password\": \"1234567\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "effd94a4-d419-4ddf-bbd2-922390bb1bf0",
+            "colId": "a1f32aaa-465d-4fde-a2a2-da97104d897f",
+            "containerId": "",
+            "name": "putEstudiante",
+            "url": "http://localhost:3000/academic/student/65d8c90f116944ed3cc927e9",
+            "method": "PUT",
+            "sortNum": 10000,
+            "created": "2024-02-23T16:33:35.120Z",
+            "modified": "2024-02-23T16:44:42.443Z",
+            "headers": [
+                {
+                    "name": "x-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NWQ4YzkwZjExNjk0NGVkM2NjOTI3ZTkiLCJpYXQiOjE3MDg3MDYyNzEsImV4cCI6MTcwODcwOTg3MX0.JdoFgGajvWTwlRriPbqU6NieJR28Z2DEHXugkRM2lRo"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\": \"Hector\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "f17a3208-e7ae-45f8-b714-fd0f3e238531",
+            "colId": "a1f32aaa-465d-4fde-a2a2-da97104d897f",
+            "containerId": "",
+            "name": "deleteEstudiante",
+            "url": "http://localhost:3000/academic/student/65d8ad486c7478c0520d2662",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2024-02-23T16:33:35.119Z",
+            "modified": "2024-02-23T16:33:35.119Z",
+            "headers": [
+                {
+                    "name": "x-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NWQ4YWNlNzZjNzQ3OGMwNTIwZDI2NTUiLCJpYXQiOjE3MDg2OTg4NzcsImV4cCI6MTcwODcwMjQ3N30.ij4fSl6DfrAJVuwgNatU4JzrPTLgMvpJn_kpsRmdYlA"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c768e58a-469d-422a-bffa-dfb386b44d84",
+            "colId": "a1f32aaa-465d-4fde-a2a2-da97104d897f",
+            "containerId": "",
+            "name": "putEstudianteCurso",
+            "url": "http://localhost:3000/academic/asignar",
+            "method": "PUT",
+            "sortNum": 20000,
+            "created": "2024-02-23T16:33:35.121Z",
+            "modified": "2024-02-23T17:44:00.273Z",
+            "headers": [
+                {
+                    "name": "x-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NWQ4ZDU1ZWQ0YWIyM2RmMDc4NTlkZDAiLCJpYXQiOjE3MDg3MDk2MDQsImV4cCI6MTcwODcxMzIwNH0.Zi-lSgtXtROE1VT7YC9i7RKgPVkKC213zskaWiUOf8M"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n \"curso1\":\"Matematica\",\n  \"curso2\":\"Matematica I\",\n   \"curso3\":\"Matematica II\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d77648d4-046e-4d3d-8dde-466b7c6b8663",
+            "colId": "a1f32aaa-465d-4fde-a2a2-da97104d897f",
+            "containerId": "",
+            "name": "cursosUsuario",
+            "url": "http://localhost:3000/academic/asignar",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-02-23T16:33:35.122Z",
+            "modified": "2024-02-23T16:39:35.914Z",
+            "headers": [
+                {
+                    "name": "x-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NWQ4YzkwZjExNjk0NGVkM2NjOTI3ZTkiLCJpYXQiOjE3MDg3MDYyNzEsImV4cCI6MTcwODcwOTg3MX0.JdoFgGajvWTwlRriPbqU6NieJR28Z2DEHXugkRM2lRo"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

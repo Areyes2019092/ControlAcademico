@@ -1,0 +1,109 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "TEACHER",
+    "dateExported": "2024-02-23T17:44:44.129Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "4527b81c-6cd1-428e-9eb6-92e9a27faf9b",
+            "colId": "33edc306-537d-431a-8c83-dbacc1bf3255",
+            "containerId": "",
+            "name": "registrarseProfesor",
+            "url": "http://localhost:3000/academic/teacher/",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-02-23T16:34:58.180Z",
+            "modified": "2024-02-23T17:29:03.134Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\": \"joseph\" ,\n  \"correo\": \"joseph@gmail.com\",\n  \"password\": \"1234567\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "52ad1ab8-fbcc-4889-b009-988e86bec8a4",
+            "colId": "33edc306-537d-431a-8c83-dbacc1bf3255",
+            "containerId": "",
+            "name": "deleteMaterias",
+            "url": "http://localhost:3000/academic/control/65d2db063141fef11b154b0b",
+            "method": "DELETE",
+            "sortNum": 10000,
+            "created": "2024-02-23T16:34:58.182Z",
+            "modified": "2024-02-23T16:34:58.182Z",
+            "headers": [
+                {
+                    "name": "x-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NWQyZDVhNjhjZTI5Nzk2M2IzNWIyMjQiLCJpYXQiOjE3MDgzMTc0MjksImV4cCI6MTcwODMyMTAyOX0.9aRQrCRRoMgH6APiVNcDy82yehQXt8rgKvY_G8Aus-s"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f90c96b4-a025-4bcf-9f41-85e83f7a14e3",
+            "colId": "33edc306-537d-431a-8c83-dbacc1bf3255",
+            "containerId": "",
+            "name": "materiasProfesorPUT",
+            "url": "http://localhost:3000/academic/control/65d2db063141fef11b154b0b",
+            "method": "PUT",
+            "sortNum": 15000,
+            "created": "2024-02-23T16:34:58.184Z",
+            "modified": "2024-02-23T16:34:58.184Z",
+            "headers": [
+                {
+                    "name": "x-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NWQyZDVhNjhjZTI5Nzk2M2IzNWIyMjQiLCJpYXQiOjE3MDgzMTc0MjksImV4cCI6MTcwODMyMTAyOX0.9aRQrCRRoMgH6APiVNcDy82yehQXt8rgKvY_G8Aus-s"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "17b22409-7040-4df9-b838-33080955c85f",
+            "colId": "33edc306-537d-431a-8c83-dbacc1bf3255",
+            "containerId": "",
+            "name": "asignarMateria",
+            "url": "http://localhost:3000/academic/control",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-02-23T16:34:58.181Z",
+            "modified": "2024-02-23T17:31:06.380Z",
+            "headers": [
+                {
+                    "name": "x-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NWQ4ZDVkZmQ0YWIyM2RmMDc4NTlkZDUiLCJpYXQiOjE3MDg3MDkzNTUsImV4cCI6MTcwODcxMjk1NX0.bDfkZ9GJFf67P2Xalz9n5z5UfGU0fcFyO9iQ3fwSOl8"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "\n{\n  \"nombre\":\"Matematica III\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "587d7221-bffd-4349-b477-5a8e97ee7511",
+            "colId": "33edc306-537d-431a-8c83-dbacc1bf3255",
+            "containerId": "",
+            "name": "cursosProfesor",
+            "url": "http://localhost:3000/academic/control/",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-02-23T16:34:58.183Z",
+            "modified": "2024-02-23T16:34:58.183Z",
+            "headers": [
+                {
+                    "name": "x-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NWQyZDVhNjhjZTI5Nzk2M2IzNWIyMjQiLCJpYXQiOjE3MDgzMTc0MjksImV4cCI6MTcwODMyMTAyOX0.9aRQrCRRoMgH6APiVNcDy82yehQXt8rgKvY_G8Aus-s"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

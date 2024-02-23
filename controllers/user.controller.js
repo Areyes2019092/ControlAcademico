@@ -1,127 +1,258 @@
-const { response, json } = require('express');
-const bcryptjs = require('bcryptjs');
-const Usuario = require('../models/user.model');
-const { generarJWT } = require("../helpers/jwt");
+const { response, json } = require("express");
 
-//Obtener todos los usaurios
-const usuariosGet = async (req, res = response) => {
-    const { limite, desde } = req.query;
-    const query = { estado: true };
-    const [total, usuarios] = await Promise.all([
-        Usuario.countDocuments(query),
-        Usuario.find(query)
-            .skip(Number(desde))
-            .limit(Number(limite))
-    ]);
+const bcrypt = require("bcrypt");
+
+const Usuario = require("../models/user.model");
+const { check } = require("express-validator");
+const { generarJWT } = require("../helpers/generate-jwt");
+const Materia = require("../models/subject.model");
+const getUser = async (req, res = response) => {
+  const query = { estado: true };
+
+  const [total, usuarios] = await Promise.all([
+    Usuario.countDocuments(query),
+    Usuario.find(query),
+  ]);
+
+  res.status(200).json({
+    total,
+    usuarios,
+  });
+};
+
+const usuariosPostSTUDENT = async (req, res) => {
+  const { nombre, correo, password } = req.body;
+  const usuario = new Usuario({ nombre, correo, password });
+
+  await usuario.save();
+  res.status(200).json({
+    usuario,
+  });
+};
+const usuariosPostTEACHER = async (req, res) => {
+  const { nombre, correo, password } = req.body;
+  const role = "TEACHER_ROLE";
+
+  try {
+    const usuario = new Usuario({ nombre, correo, password, role });
+    await usuario.save();
+
     res.status(200).json({
-        total,
-        usuarios
+      usuario,
     });
-}
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
-//Select el usuario por medio del id
-
-const getUsuarioByid = async (req, res) => {
-    const { id } = req.params;
-    const usuario = await Usuario.findOne({ _id: id });
-    res.status(200).json({
-        usuario
-    });
-}
-
-/*const asignarMaestroPut = async (req, res) => {
+const getUserById = async (req, res) => {
   const { id } = req.params;
-  const { _id, nombre, ...resto } = req.body;
-  await Materia.findByIdAndUpdate(id, resto);
-  const materia = await Materia.findOne({ _id: id });
-  req.status(200).json({
-    msg: "Maestro asignado exitosamente",
-    materia,
-*/
+  const usuario = await Usuario.findOne({ _id: id });
 
-
-//Actualizar
-
-const usuariosPut = async (req, res) => {
-    const { id } = req.params;
-    const { _id, password, google, correo, ...resto } = req.body;
-    const usuario = await Usuario.findByIdAndUpdate(id, resto);
-    res.status(200).json({
-        msg: 'Usuario Actualizado'
-    })
-}
-
-//Eliminar usuario
-
-const usuariosDelete = async (req, res) => {
-    const { id } = req.params;
-    const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
-
-    res.status(200).json({
-        msg: 'Usuario Eliminado'
-    });
-}
-
-//Crear un usario nuevo
+  res.status(200).json({
+    usuario,
+  });
+};
 
 const usuariosPost = async (req, res) => {
-    const { nombre, correo, password, role } = req.body;
-    const usuario = new Usuario({ nombre, correo, password, role });
-    const salt = bcryptjs.genSaltSync();
-    usuario.password = bcryptjs.hashSync(password, salt);
-    await usuario.save();
-    res.status(200).json({
-        usuario
+  const { nombre, correo, password, role } = req.body;
+  const usuario = new Usuario({ nombre, correo, password, role });
+
+  await usuario.save();
+  res.status(200).json({
+    usuario,
+  });
+};
+
+const loginUsers = async (req, res) => {
+  const { correo, password } = req.body;
+  const usuario = await Usuario.findOne({ correo: correo, password: password });
+  if (!usuario) {
+    return res.status(400).json({ msg: "Datos incorrectos" });
+  }
+
+  const token = await generarJWT(usuario.id);
+  res.status(200).json({
+    msg: "Acceso concedido",
+    token,
+  });
+};
+
+const usuariosDelete = async (req, res) => {
+  const { id } = req.params;
+  await Usuario.findByIdAndUpdate(id, { estado: false });
+
+  const usuario = await Usuario.findOne({ _id: id });
+
+  res.status(200).json({
+    msg: "Usuario eliminado exitosamente",
+    usuario,
+  });
+};
+
+const studentDelete = async (req, res) => {
+  const { id } = req.params;
+
+  const usuario = await Usuario.findOne({ _id: id });
+  const usuarioAutenticado = req.usuario;
+  if (usuarioAutenticado.role === "TEACHER_ROLE") {
+    return res.status(400).json({
+      msg: "No es un estudiante",
     });
-}
-
-//Si unos de los parametros no puede es erroneo, mostrar la razon de porque no se puede registrar
-
-const usuariosLogin = async (req, res) => {
-    const { correo, password } = req.body;
-    try{
-        const usuario = await Usuario.findOne({ correo });
-    if (!usuario) {
-        return res.status(400).json({
-            msg: 'El usuario no existe'
-        });
-    } if(!usuario.estado){
-        return res.status(400).json({
-            msg: 'El usuario fue eliminado'
-        })
-    }
-
-    const passwordValido = bcryptjs.compareSync(password, usuario.password);
-    if (!passwordValido) {
-        return res.status(400).json({
-            msg: 'Intente de nuevo'
-        });
-    }
-
-    //Creo token para despues mostrarlo al usuario al iniciar sesion
-    const token = await generarJWT(usuario.id)
-
-    res.status(200).json({
-        msg_1: 'Inicio de sesion',
-        msg_2: 'token'+ token,
+  }
+  if (usuarioAutenticado.id !== id) {
+    return res.status(400).json({
+      msg: "El usuario no puede eliminar otro usuario",
     });
+  }
+  await Usuario.findByIdAndUpdate(id, { estado: false });
 
-    //Si no se pudo solamente colocare error
-    }catch(e){
-        console.log(e);
-        res.status(500).json({
-            msg: 'Error'
-        })
-    }
+  res.status(200).json({
+    msg: "Usuario eliminado exitosamente",
+    usuario,
+    usuarioAutenticado,
+  });
+};
 
-}
+const teacherDelete = async (req, res) => {
+  const { id } = req.params;
 
+  const usuario = await Usuario.findOne({ _id: id });
+  const usuarioAutenticado = req.usuario;
+  if (usuarioAutenticado.role !== "TEACHER_ROLE") {
+    return res.status(400).json({
+      msg: "No es un profesor",
+    });
+  }
+  if (usuarioAutenticado.id !== id) {
+    return res.status(400).json({
+      msg: "El usuario no puede eliminar otro usuario",
+    });
+  }
+  await Usuario.findByIdAndUpdate(id, { estado: false });
+
+  res.status(200).json({
+    msg: "Usuario eliminado exitosamente",
+    usuario,
+    usuarioAutenticado,
+  });
+};
+
+const getMateriasUser = async (req, res) => {
+  const usuarioAutenticado = req.usuario;
+  if (usuarioAutenticado.role === "TEACHER_ROLE") {
+    return res.status(400).json({
+      msg: "No es un estudiante",
+    });
+  }
+  const usuario = await Usuario.findOne({ _id: usuarioAutenticado.id });
+  const materiasUsuario = {
+    materia1: usuario.materia1,
+    materia2: usuario.materia2,
+    materia3: usuario.materia3,
+  };
+  res.status(200).json({
+    materiasUsuario,
+  });
+};
+
+const studentPut = async (req, res) => {
+  const { id } = req.params;
+  const { maestroId, correo, password, role, ...resto } = req.body;
+  const usuario = await Usuario.findOne({ _id: id });
+  const usuarioAutenticado = req.usuario;
+  if (usuarioAutenticado.role === "TEACHER_ROLE") {
+    return res.status(400).json({
+      msg: "No es un estudiante",
+    });
+  }
+  if (usuarioAutenticado.id !== id) {
+    return res.status(400).json({
+      msg: "El usuario no puede editar otro usuario",
+    });
+  }
+  await Usuario.findByIdAndUpdate(id, resto);
+
+  res.status(200).json({
+    msg: "Usuario editado exitosamente",
+    usuario,
+    usuarioAutenticado,
+  });
+};
+
+const teachertPut = async (req, res) => {
+  const { id } = req.params;
+  const { maestroId, correo, password, role, ...resto } = req.body;
+  const usuario = await Usuario.findOne({ _id: id });
+  const usuarioAutenticado = req.usuario;
+  if (usuarioAutenticado.role !== "TEACHER_ROLE") {
+    return res.status(400).json({
+      msg: "No es un profesor",
+    });
+  }
+  if (usuarioAutenticado.id !== id) {
+    return res.status(400).json({
+      msg: "El usuario no puede editar otro usuario",
+    });
+  }
+  await Usuario.findByIdAndUpdate(id, resto);
+
+  res.status(200).json({
+    msg: "Usuario editado exitosamente",
+    usuario,
+    usuarioAutenticado,
+  });
+};
+
+const studentCursoPut = async (req, res) => {
+  const { curso1, curso2, curso3 } = req.body;
+
+  const usuarioAutenticado = req.usuario;
+  if (usuarioAutenticado.role === "TEACHER_ROLE") {
+    return res.status(400).json({
+      msg: "No es un estudiante",
+    });
+  }
+
+  await Usuario.findByIdAndUpdate(
+    usuarioAutenticado.id,
+    curso1,
+    curso2,
+    curso3
+  );
+
+  res.status(200).json({
+    msg: "Cursos agregados exitosamente",
+    usuarioAutenticado,
+  });
+};
+
+const usuariosPut = async (req, res) => {
+  const { id } = req.params;
+  const { maestroId, correo, password, role, ...resto } = req.body;
+  await Usuario.findByIdAndUpdate(id, resto);
+
+  const usuario = await Usuario.findOne({ _id: id });
+
+  res.status(200).json({
+    msg: "Usuario actualizado exitosamente",
+    usuario,
+  });
+};
 
 module.exports = {
-    usuariosDelete,
-    usuariosPost,
-    usuariosGet,
-    getUsuarioByid,
-    usuariosPut,
-    usuariosLogin
-}
+  getUser,
+  getUserById,
+  usuariosPost,
+  usuariosPut,
+  usuariosDelete,
+  usuariosPostSTUDENT,
+  loginUsers,
+  studentDelete,
+  studentPut,
+  studentCursoPut,
+  getMateriasUser,
+  usuariosPostTEACHER,
+  teachertPut,
+  teacherDelete,
+};

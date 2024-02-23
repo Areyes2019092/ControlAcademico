@@ -1,5 +1,5 @@
 {
-  "name": "controlacademico",
+  "name": "ControlAcademico",
   "version": "1.0.0",
   "description": "Practica supervisada",
   "main": "index.js",
@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.2",
     "express": "^4.18.2",

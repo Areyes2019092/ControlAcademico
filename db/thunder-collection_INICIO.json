@@ -1,0 +1,28 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "INICIO",
+    "dateExported": "2024-02-23T17:44:47.945Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "bf227b20-1570-4563-81bf-6e6f949a5244",
+            "colId": "ad612c25-a494-4758-a3fb-6388aea58c02",
+            "containerId": "",
+            "name": "Registrarse",
+            "url": "http://localhost:3000/academic/login/",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-02-23T16:35:03.767Z",
+            "modified": "2024-02-23T17:33:24.569Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"correo\": \"maicol@gmail.com\",\n  \"password\": \"1234567\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
