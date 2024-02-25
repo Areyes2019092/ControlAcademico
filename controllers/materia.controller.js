@@ -7,19 +7,40 @@ const { check } = require("express-validator");
 const { existeMaestroById } = require("../helpers/db-validator");
 const Usuario = require("../models/user.model");
 
-const getMaterias = async (req, res = response) => {
-  const query = { estado: true };
+const materiasPut = async (req, res) => {
+  const { id } = req.params;
+  const { maestroId, ...resto } = req.body;
 
-  const [total, materias] = await Promise.all([
-    Materia.countDocuments(query),
-    Materia.find(query),
-  ]);
+  try {
+    await check(maestroId).custom(existeMaestroById).run(req);
 
-  res.status(200).json({
-    total,
-    materias,
-  });
+    const materiaAnterior = await Materia.findById(id);
+
+    await Materia.findByIdAndUpdate(id, { maestro: maestroId, ...resto });
+
+    const materiaActualizada = await Materia.findById(id);
+
+    const query = {
+      $or: [{ materia1: id }, { materia2: id }, { materia3: id }],
+    };
+    const update = {
+      $set: {
+        materia1: materiaActualizada.nombre,
+        materia2: materiaActualizada.nombre,
+        materia3: materiaActualizada.nombre,
+      },
+    };
+    await Usuario.updateMany(query, update);
+
+    return res.status(200).json({
+      msg: "Materia actualizada",
+      materia: materiaActualizada,
+    });
+  } catch (error) {
+    return res.status(400).json({ msg: error.message });
+  }
 };
+
 
 const getMateriaById = async (req, res) => {
   const { id } = req.params;
@@ -66,6 +87,20 @@ const materiasPost = async (req, res) => {
   });
 };
 
+const getMaterias = async (req, res = response) => {
+  const query = { estado: true };
+
+  const [total, materias] = await Promise.all([
+    Materia.countDocuments(query),
+    Materia.find(query),
+  ]);
+
+  res.status(200).json({
+    total,
+    materias,
+  });
+};
+
 const materiasPostMaestro = async (req, res) => {
   const { nombre } = req.body;
   const usuarioAutenticado = req.usuario;
@@ -92,40 +127,6 @@ const materiasPostMaestro = async (req, res) => {
     res
       .status(500)
       .json({ msg: "Error", error: error.message });
-  }
-};
-
-const materiasPut = async (req, res) => {
-  const { id } = req.params;
-  const { maestroId, ...resto } = req.body;
-
-  try {
-    await check(maestroId).custom(existeMaestroById).run(req);
-
-    const materiaAnterior = await Materia.findById(id);
-
-    await Materia.findByIdAndUpdate(id, { maestro: maestroId, ...resto });
-
-    const materiaActualizada = await Materia.findById(id);
-
-    const query = {
-      $or: [{ materia1: id }, { materia2: id }, { materia3: id }],
-    };
-    const update = {
-      $set: {
-        materia1: materiaActualizada.nombre,
-        materia2: materiaActualizada.nombre,
-        materia3: materiaActualizada.nombre,
-      },
-    };
-    await Usuario.updateMany(query, update);
-
-    return res.status(200).json({
-      msg: "Materia actualizada",
-      materia: materiaActualizada,
-    });
-  } catch (error) {
-    return res.status(400).json({ msg: error.message });
   }
 };
 

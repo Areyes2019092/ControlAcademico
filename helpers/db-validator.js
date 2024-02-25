@@ -29,6 +29,15 @@ const existeCursoById = async ( id = '') => {
 
 */
 
+const materiaRepetida = (value, { req }) => {
+  const materias = [req.body.materia1, req.body.materia2, req.body.materia3];
+  const uniqueMaterias = new Set(materias);
+  if (uniqueMaterias.size !== materias.length) {
+    throw new Error("Las materias  ya existen");
+  }
+  return true;
+};
+
 const existeMaestroById = async (id = "") => {
   const existeUsuario = await Usuario.findOne({ _id: id });
   if (!existeUsuario) {
@@ -68,13 +77,6 @@ const existeCursoById = async ( nombre = '') => {
 
 */
 
-async function materiaNombre(nombre = "") {
-  const materia = await Materia.findOne({ nombre: nombre });
-  if (!materia) {
-    throw new Error(`La materia no existe`);
-  }
-}
-
 const existeUsuarioById = async (id = "") => {
   const existeUsuario = await Usuario.findOne({ _id: id });
   if (!existeUsuario) {
@@ -89,14 +91,15 @@ async function correoExiste(correo = "") {
   }
 }
 
-const materiaRepetida = (value, { req }) => {
-  const materias = [req.body.materia1, req.body.materia2, req.body.materia3];
-  const uniqueMaterias = new Set(materias);
-  if (uniqueMaterias.size !== materias.length) {
-    throw new Error("Las materias  ya existen");
+
+
+async function materiaNombre(nombre = "") {
+  const materia = await Materia.findOne({ nombre: nombre });
+  if (!materia) {
+    throw new Error(`La materia no existe`);
   }
-  return true;
-};
+}
+
 
 module.exports = {
   existeMaestroById,
