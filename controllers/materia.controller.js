@@ -40,7 +40,7 @@ const getMateriasByProfesor = async (req, res) => {
     if (!materias || materias.length === 0) {
       return res
         .status(404)
-        .json({ msg: "No se encontraron materias asociadas al profesor" });
+        .json({ msg: "El profesor no tiene materias" });
     }
 
     res.status(200).json({
@@ -50,7 +50,7 @@ const getMateriasByProfesor = async (req, res) => {
     res
       .status(500)
       .json({
-        msg: "Error al obtener las materias del profesor",
+        msg: "Error",
         error: error.message,
       });
   }
@@ -78,20 +78,20 @@ const materiasPostMaestro = async (req, res) => {
     }
 
     if (usuarioAutenticado.role !== "TEACHER_ROLE") {
-      return res.status(400).json({ msg: "El usuario no es maestro" });
+      return res.status(400).json({ msg: "El rol no es correcto" });
     }
     const materia = new Materia({ nombre, Maestro: idMaestro });
 
     await materia.save();
 
     res.status(200).json({
-      msg: "Materia creada exitosamente",
+      msg: "Materia creada",
       materia,
     });
   } catch (error) {
     res
       .status(500)
-      .json({ msg: "Error al crear la materia", error: error.message });
+      .json({ msg: "Error", error: error.message });
   }
 };
 
@@ -121,7 +121,7 @@ const materiasPut = async (req, res) => {
     await Usuario.updateMany(query, update);
 
     return res.status(200).json({
-      msg: "Materia actualizada exitosamente",
+      msg: "Materia actualizada",
       materia: materiaActualizada,
     });
   } catch (error) {
@@ -136,7 +136,7 @@ const materiasDelete = async (req, res) => {
   const materia = await Materia.findOne({ _id: id });
 
   res.status(200).json({
-    msg: "Materia eliminada exitosamente",
+    msg: "Materia eliminada",
     materia,
   });
 };
@@ -153,7 +153,7 @@ const materiasDeleteProfesor = async (req, res) => {
     }
 
     if (materia.Maestro.toString() !== usuarioAutenticado.id) {
-      return res.status(400).json({ msg: "No es el dueño del curso" });
+      return res.status(400).json({ msg: "Acceso denegado" });
     }
 
     await Materia.findByIdAndUpdate(id, { estado: false });
@@ -161,7 +161,7 @@ const materiasDeleteProfesor = async (req, res) => {
     const materiaActualizada = await Materia.findOne({ _id: id });
 
     res.status(200).json({
-      msg: "Materia eliminada exitosamente",
+      msg: "Materia eliminada",
       materia: materiaActualizada,
     });
   } catch (error) {

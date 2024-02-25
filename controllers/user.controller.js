@@ -222,7 +222,7 @@ const studentCursoPut = async (req, res) => {
   );
 
   res.status(200).json({
-    msg: "Cursos agregados exitosamente",
+    msg: "Cursos agregados",
     usuarioAutenticado,
   });
 };
@@ -235,7 +235,7 @@ const usuariosPut = async (req, res) => {
   const usuario = await Usuario.findOne({ _id: id });
 
   res.status(200).json({
-    msg: "Usuario actualizado exitosamente",
+    msg: "Usuario actualizado",
     usuario,
   });
 };
